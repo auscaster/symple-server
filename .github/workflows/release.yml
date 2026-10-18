@@ -1,0 +1,59 @@
+name: Release
+
+# Pushing a vX.Y.Z tag publishes that version to npm. The package trusts this
+# workflow through npm trusted publishing, so no npm token is stored here.
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write # npm trusted publishing
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Check the tag matches package.json
+        run: |
+          version="$(node -p 'require("./package.json").version')"
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "tag $GITHUB_REF_NAME does not match package.json version $version" >&2
+            exit 1
+          fi
+
+      - name: Install
+        run: npm ci
+
+      - name: Check out symple-client for the integration test
+        run: git clone --depth 1 https://github.com/nilstate/symple-client.git ../symple-client
+
+      - name: Test
+        run: npm test
+
+      - name: Publish to npm
+        run: |
+          name="$(node -p 'require("./package.json").name')"
+          version="${GITHUB_REF_NAME#v}"
+          if npm view "$name@$version" version >/dev/null 2>&1; then
+            echo "$name@$version is already on npm"
+            exit 0
+          fi
+          npm publish --access public
