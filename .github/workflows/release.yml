@@ -43,7 +43,7 @@ jobs:
         run: npm ci
 
       - name: Check out symple-client for the integration test
-        run: git clone --depth 1 https://github.com/nilstate/symple-client.git ../symple-client
+        run: git clone --depth 1 https://github.com/auscaster/symple-client.git ../symple-client
 
       - name: Test
         run: npm test
