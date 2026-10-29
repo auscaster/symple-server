@@ -1,6 +1,6 @@
 {
   "name": "symple-server",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Symple v4 realtime messaging and presence server",
   "main": "./lib/symple.js",
   "engines": {
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nilstate/symple-server.git"
+    "url": "git+https://github.com/auscaster/symple-server.git"
   },
   "keywords": [
     "symple",
@@ -30,10 +30,10 @@
     "webrtc",
     "chat"
   ],
-  "author": "Kam Low <auscaster@gmail.com> (https://0state.com)",
+  "author": "Kam Low <auscaster@gmail.com> (https://auscaster.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nilstate/symple-server/issues"
+    "url": "https://github.com/auscaster/symple-server/issues"
   },
-  "homepage": "https://0state.com/symple"
+  "homepage": "https://auscaster.com/symple"
 }
